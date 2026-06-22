@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salvo 1968 — Marketing Operations build status</title>
+<style>
+  * { box-sizing: border-box; }
+  :root {
+    --navy: #1F2A44;
+    --navy-dark: #15192C;
+    --gold: #EFB323;
+    --cream: #FBF4E4;
+    --paper: #FDFBF5;
+    --grey-light: #E8E2D4;
+    --grey: #8A8478;
+    --grey-dark: #4A4438;
+    --green: #5A8859;
+    --amber: #D49B2C;
+    --pending: #9B8E78;
+  }
+  body {
+    background: var(--cream);
+    color: var(--navy);
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2.5rem 2.5rem 4rem;
+    line-height: 1.6;
+    font-size: 15px;
+  }
+  h1, h2, h3 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 400;
+    color: var(--navy);
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+  h2 {
+    font-size: 1.35rem;
+    margin: 3rem 0 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--gold);
+    display: inline-block;
+  }
+  h3 { font-size: 1rem; margin-bottom: 0.35rem; color: var(--navy); }
+  p { margin: 0 0 0.75rem; }
+  header { margin-bottom: 1rem; padding-bottom: 2rem; border-bottom: 1px solid var(--grey-light); }
+  .subtitle { color: var(--grey-dark); font-size: 1rem; margin-top: 0.25rem; }
+  .meta { color: var(--grey); font-size: 0.85rem; margin-top: 1rem; font-style: italic; }
+
+  /* System diagram */
+  .diagram {
+    background: var(--paper);
+    border: 1px solid var(--grey-light);
+    border-radius: 4px;
+    padding: 2.5rem 1.5rem;
+    margin-top: 0.5rem;
+  }
+  .diagram-row { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; align-items: stretch; }
+  .diagram-row.split { gap: 2.5rem; align-items: stretch; }
+  .arrow {
+    text-align: center;
+    color: var(--gold);
+    font-size: 1.3rem;
+    padding: 0.4rem 0;
+    letter-spacing: 1em;
+    font-weight: 600;
+  }
+  .node {
+    background: white;
+    border: 1px solid var(--grey-light);
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    text-align: center;
+    min-width: 180px;
+    font-size: 0.9rem;
+    position: relative;
+    color: var(--navy);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .node strong { display: block; font-weight: 600; }
+  .node small { display: block; color: var(--grey); margin-top: 0.2rem; font-size: 0.78rem; }
+  .node.hub {
+    background: var(--navy);
+    color: white;
+    border-color: var(--navy-dark);
+    padding: 1rem 1.5rem;
+    min-width: 320px;
+  }
+  .node.hub small { color: var(--cream); }
+  .node.gate {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--navy-dark);
+    padding: 1rem 1.5rem;
+    min-width: 240px;
+  }
+  .node.gate small { color: var(--navy-dark); opacity: 0.85; }
+  .node.outputs {
+    background: white;
+    border: 2px solid var(--navy);
+    padding: 1rem 1.5rem;
+    min-width: 240px;
+  }
+  .node.person {
+    background: var(--cream);
+    border-color: var(--gold);
+    min-width: 160px;
+  }
+
+  /* Status badges on diagram nodes */
+  .status-badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.18rem 0.5rem;
+    border-radius: 2px;
+    margin-top: 0.5rem;
+    line-height: 1.4;
+  }
+  .status-live { background: var(--green); color: white; }
+  .status-build { background: var(--amber); color: white; }
+  .status-coming { background: var(--pending); color: white; }
+  .status-aug { background: var(--navy); color: white; }
+
+  .group {
+    background: var(--cream);
+    border: 1px dashed var(--gold);
+    border-radius: 6px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    min-width: 240px;
+  }
+  .group-label {
+    font-family: Georgia, serif;
+    font-size: 0.85rem;
+    color: var(--grey-dark);
+    text-align: center;
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .loop-note {
+    text-align: center;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--grey-light);
+    font-size: 0.85rem;
+    color: var(--grey-dark);
+    font-style: italic;
+  }
+
+  /* Status legend */
+  .legend {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+    font-size: 0.8rem;
+    color: var(--grey-dark);
+    padding: 0.75rem 0;
+  }
+  .legend-item { display: flex; align-items: center; gap: 0.4rem; }
+
+  /* Cards */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--grey-light);
+    border-radius: 4px;
+    padding: 1rem 1.2rem;
+    border-left: 3px solid var(--gold);
+  }
+  .card h3 { font-family: Georgia, serif; font-size: 1.05rem; }
+  .card p { font-size: 0.92rem; color: var(--grey-dark); margin: 0.35rem 0 0; }
+
+  /* Footer */
+  footer {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--grey-light);
+    color: var(--grey);
+    font-size: 0.85rem;
+    text-align: center;
+  }
+  footer strong { color: var(--navy); }
+
+  @media (max-width: 760px) {
+    body { padding: 1.25rem; }
+    .diagram-row.split { flex-direction: column; align-items: stretch; }
+    .group { min-width: auto; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Salvo 1968 — Marketing operations build</h1>
+  <p class="subtitle">An at-a-glance view of the system being built with Lionstar Social. Each component shows its current status.</p>
+</header>
+
+<h2>The system</h2>
+<div class="diagram">
+
+  <div class="diagram-row">
+    <div class="node person"><strong>Salvo marketing team</strong><small>primary users</small></div>
+    <div class="node person"><strong>Rosa</strong><small>reviews by exception</small></div>
+    <div class="node person"><strong>Lionstar</strong><small>builds and guides</small></div>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <div class="diagram-row">
+    <div class="node hub">
+      <strong>Knowledge hub</strong>
+      <small>single source of truth — personas, brand rules, quality criteria</small>
+      <span class="status-badge status-live">Live</span>
+    </div>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <div class="diagram-row split">
+    <div class="group">
+      <div class="group-label">Skills</div>
+      <div class="node">
+        <strong>Instagram</strong>
+        <small>/draft-b2b-instagram</small>
+        <span class="status-badge status-live">Live</span>
+      </div>
+      <div class="node">
+        <strong>LinkedIn</strong>
+        <small>Discovery done</small>
+        <span class="status-badge status-aug">Aug / Sept</span>
+      </div>
+      <div class="node">
+        <strong>Email (Klaviyo)</strong>
+        <small>Awaiting input</small>
+        <span class="status-badge status-coming">In progress</span>
+      </div>
+      <div class="node">
+        <strong>WhatsApp</strong>
+        <small>v1 scope locked</small>
+        <span class="status-badge status-aug">Aug / Sept</span>
+      </div>
+      <div class="node">
+        <strong>Video content</strong>
+        <small>Helps Joe ideate &amp; plan</small>
+        <span class="status-badge status-aug">September</span>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-label">Projects</div>
+      <div class="node">
+        <strong>Content Brief</strong>
+        <small>per-story brief builder</small>
+        <span class="status-badge status-live">Live</span>
+      </div>
+      <div class="node">
+        <strong>Monthly Brief</strong>
+        <small>operational frame</small>
+        <span class="status-badge status-build">In build — June</span>
+      </div>
+      <div class="node">
+        <strong>House of Pasta Campaign</strong>
+        <small>first campaign brief</small>
+        <span class="status-badge status-build">In build — June</span>
+      </div>
+      <div class="node">
+        <strong>Quarterly Campaign Brief</strong>
+        <small>strategic frame</small>
+        <span class="status-badge status-aug">September</span>
+      </div>
+      <div class="node">
+        <strong>Strategy / Brainstorming</strong>
+        <small>Rosa's thinking tool</small>
+        <span class="status-badge status-aug">Sept — Oct live</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <div class="diagram-row">
+    <div class="node gate">
+      <strong>Quality gate</strong>
+      <small>the bar everything passes — brand, voice, commercial intent</small>
+      <span class="status-badge status-live">Live</span>
+    </div>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <div class="diagram-row">
+    <div class="node outputs">
+      <strong>Outputs</strong>
+      <small>content, briefs, performance view</small>
+    </div>
+  </div>
+
+  <div class="loop-note">↑ learnings loop back into the Knowledge hub so the system keeps getting sharper</div>
+</div>
+
+<div class="legend">
+  <span class="legend-item"><span class="status-badge status-live">Live</span> in active team use</span>
+  <span class="legend-item"><span class="status-badge status-build">In build</span> being built this month</span>
+  <span class="legend-item"><span class="status-badge status-coming">In progress</span> awaiting input</span>
+  <span class="legend-item"><span class="status-badge status-aug">August / September</span> scheduled next</span>
+</div>
+
+<h2>What's happening this month</h2>
+<div class="card-grid">
+
+  <div class="card">
+    <h3>House of Pasta — Campaign Brief project</h3>
+    <p>First proper Campaign Brief project, built around the House of Pasta launch. Sets the template for how future campaigns get briefed across channels.</p>
+  </div>
+
+  <div class="card">
+    <h3>Monthly Brief template</h3>
+    <p>Built from Rosa's July plan. Operational frame that cascades from quarterly direction into the month's priorities and keeps every channel aligned.</p>
+  </div>
+
+  <div class="card">
+    <h3>Content Brief Project — June iteration</h3>
+    <p>Adding prompts for buyer lens, product role and commercial objective so every brief threads Jay's commercial framing through to the content.</p>
+  </div>
+
+</div>
+
+<h2>What's coming next</h2>
+<div class="card-grid">
+
+  <div class="card">
+    <h3>August / September — channel skills</h3>
+    <p>LinkedIn and WhatsApp skills built once the brief structure is stable, so they ladder up to the new framework cleanly. Email skill once Vicky's input lands.</p>
+  </div>
+
+  <div class="card">
+    <h3>September — operations layer</h3>
+    <p>Quarterly Campaign Brief project, Strategy / Brainstorming project for Rosa, Design Brief workflow for Manuela, marketing SOPs, performance feedback loop.</p>
+  </div>
+
+  <div class="card">
+    <h3>Q4 — Tools and strategy</h3>
+    <p>HubSpot integration scoping, basic reporting dashboard, governance document, trends briefings, 2027 roadmap proposal.</p>
+  </div>
+
+</div>
+
+<footer>
+  <p><strong>Salvo 1968 × Lionstar Social</strong> &nbsp;·&nbsp; Last updated 22 June 2026 &nbsp;·&nbsp; Refresh anytime to see the latest</p>
+</footer>
+
+</body>
+</html>
