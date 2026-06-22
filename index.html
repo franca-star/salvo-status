@@ -7,21 +7,23 @@
 <style>
   * { box-sizing: border-box; }
   :root {
-    --navy: #1F2A44;
-    --navy-dark: #15192C;
-    --gold: #EFB323;
-    --cream: #FBF4E4;
-    --paper: #FDFBF5;
-    --grey-light: #E8E2D4;
-    --grey: #8A8478;
-    --grey-dark: #4A4438;
-    --green: #5A8859;
-    --amber: #D49B2C;
-    --pending: #9B8E78;
+    --bg: #FBFAF6;
+    --paper: #FFFFFF;
+    --ink: #2A2421;
+    --ink-soft: #5A5249;
+    --ink-mute: #8A8278;
+    --gold: #C1811E;
+    --gold-soft: #E8D4B0;
+    --border: #E8E2D4;
+
+    --status-live: #687343;
+    --status-build: #C1811E;
+    --status-progress: #C3C7B4;
+    --status-future: #21777F;
   }
   body {
-    background: var(--cream);
-    color: var(--navy);
+    background: var(--bg);
+    color: var(--ink);
     font-family: 'Inter', -apple-system, system-ui, sans-serif;
     max-width: 1100px;
     margin: 0 auto;
@@ -32,11 +34,11 @@
   h1, h2, h3 {
     font-family: Georgia, 'Times New Roman', serif;
     font-weight: 400;
-    color: var(--navy);
+    color: var(--ink);
     margin: 0;
     letter-spacing: -0.01em;
   }
-  h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+  h1 { font-size: 2rem; margin-bottom: 0.4rem; }
   h2 {
     font-size: 1.35rem;
     margin: 3rem 0 1.25rem;
@@ -44,16 +46,34 @@
     border-bottom: 2px solid var(--gold);
     display: inline-block;
   }
-  h3 { font-size: 1rem; margin-bottom: 0.35rem; color: var(--navy); }
+  h3 { font-size: 1rem; margin-bottom: 0.35rem; color: var(--ink); }
   p { margin: 0 0 0.75rem; }
-  header { margin-bottom: 1rem; padding-bottom: 2rem; border-bottom: 1px solid var(--grey-light); }
-  .subtitle { color: var(--grey-dark); font-size: 1rem; margin-top: 0.25rem; }
-  .meta { color: var(--grey); font-size: 0.85rem; margin-top: 1rem; font-style: italic; }
+
+  /* Header */
+  header { margin-bottom: 1rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+  .logos {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+  .logos img {
+    height: 44px;
+    width: auto;
+    display: block;
+  }
+  .logos .sep {
+    color: var(--ink-mute);
+    font-family: Georgia, serif;
+    font-size: 1.2rem;
+    font-weight: 300;
+  }
+  .subtitle { color: var(--ink-soft); font-size: 1rem; margin-top: 0.25rem; }
 
   /* System diagram */
   .diagram {
     background: var(--paper);
-    border: 1px solid var(--grey-light);
+    border: 1px solid var(--border);
     border-radius: 4px;
     padding: 2.5rem 1.5rem;
     margin-top: 0.5rem;
@@ -69,50 +89,50 @@
     font-weight: 600;
   }
   .node {
-    background: white;
-    border: 1px solid var(--grey-light);
+    background: var(--paper);
+    border: 1px solid var(--border);
     border-radius: 4px;
     padding: 0.75rem 1rem;
     text-align: center;
     min-width: 180px;
     font-size: 0.9rem;
-    position: relative;
-    color: var(--navy);
+    color: var(--ink);
     display: flex;
     flex-direction: column;
     justify-content: center;
   }
   .node strong { display: block; font-weight: 600; }
-  .node small { display: block; color: var(--grey); margin-top: 0.2rem; font-size: 0.78rem; }
+  .node small { display: block; color: var(--ink-mute); margin-top: 0.2rem; font-size: 0.78rem; }
   .node.hub {
-    background: var(--navy);
-    color: white;
-    border-color: var(--navy-dark);
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
     padding: 1rem 1.5rem;
     min-width: 320px;
+    border-bottom: 3px solid var(--gold);
   }
-  .node.hub small { color: var(--cream); }
+  .node.hub small { color: var(--gold-soft); }
   .node.gate {
     background: var(--gold);
     border-color: var(--gold);
-    color: var(--navy-dark);
+    color: var(--ink);
     padding: 1rem 1.5rem;
     min-width: 240px;
   }
-  .node.gate small { color: var(--navy-dark); opacity: 0.85; }
+  .node.gate small { color: var(--ink); opacity: 0.85; }
   .node.outputs {
-    background: white;
-    border: 2px solid var(--navy);
+    background: var(--paper);
+    border: 2px solid var(--ink);
     padding: 1rem 1.5rem;
     min-width: 240px;
   }
   .node.person {
-    background: var(--cream);
+    background: var(--bg);
     border-color: var(--gold);
     min-width: 160px;
   }
 
-  /* Status badges on diagram nodes */
+  /* Status badges */
   .status-badge {
     display: inline-block;
     font-size: 0.65rem;
@@ -124,13 +144,13 @@
     margin-top: 0.5rem;
     line-height: 1.4;
   }
-  .status-live { background: var(--green); color: white; }
-  .status-build { background: var(--amber); color: white; }
-  .status-coming { background: var(--pending); color: white; }
-  .status-aug { background: var(--navy); color: white; }
+  .status-live { background: var(--status-live); color: white; }
+  .status-build { background: var(--status-build); color: white; }
+  .status-progress { background: var(--status-progress); color: var(--ink); }
+  .status-future { background: var(--status-future); color: white; }
 
   .group {
-    background: var(--cream);
+    background: var(--bg);
     border: 1px dashed var(--gold);
     border-radius: 6px;
     padding: 1rem;
@@ -142,7 +162,7 @@
   .group-label {
     font-family: Georgia, serif;
     font-size: 0.85rem;
-    color: var(--grey-dark);
+    color: var(--ink-soft);
     text-align: center;
     margin-bottom: 0.25rem;
     text-transform: uppercase;
@@ -152,9 +172,9 @@
     text-align: center;
     margin-top: 1.5rem;
     padding-top: 1rem;
-    border-top: 1px dashed var(--grey-light);
+    border-top: 1px dashed var(--border);
     font-size: 0.85rem;
-    color: var(--grey-dark);
+    color: var(--ink-soft);
     font-style: italic;
   }
 
@@ -165,7 +185,7 @@
     margin-top: 1.5rem;
     flex-wrap: wrap;
     font-size: 0.8rem;
-    color: var(--grey-dark);
+    color: var(--ink-soft);
     padding: 0.75rem 0;
   }
   .legend-item { display: flex; align-items: center; gap: 0.4rem; }
@@ -179,35 +199,41 @@
   }
   .card {
     background: var(--paper);
-    border: 1px solid var(--grey-light);
+    border: 1px solid var(--border);
     border-radius: 4px;
     padding: 1rem 1.2rem;
     border-left: 3px solid var(--gold);
   }
   .card h3 { font-family: Georgia, serif; font-size: 1.05rem; }
-  .card p { font-size: 0.92rem; color: var(--grey-dark); margin: 0.35rem 0 0; }
+  .card p { font-size: 0.92rem; color: var(--ink-soft); margin: 0.35rem 0 0; }
 
   /* Footer */
   footer {
     margin-top: 4rem;
     padding-top: 1.5rem;
-    border-top: 1px solid var(--grey-light);
-    color: var(--grey);
+    border-top: 1px solid var(--border);
+    color: var(--ink-mute);
     font-size: 0.85rem;
     text-align: center;
   }
-  footer strong { color: var(--navy); }
+  footer strong { color: var(--ink); }
 
   @media (max-width: 760px) {
     body { padding: 1.25rem; }
     .diagram-row.split { flex-direction: column; align-items: stretch; }
     .group { min-width: auto; }
+    .logos img { height: 36px; }
   }
 </style>
 </head>
 <body>
 
 <header>
+  <div class="logos">
+    <img src="lionstar-logo.png" alt="Lionstar Social">
+    <span class="sep">×</span>
+    <img src="salvo-logo.png" alt="Salvo 1968">
+  </div>
   <h1>Salvo 1968 — Marketing operations build</h1>
   <p class="subtitle">An at-a-glance view of the system being built with Lionstar Social. Each component shows its current status.</p>
 </header>
@@ -244,22 +270,22 @@
       <div class="node">
         <strong>LinkedIn</strong>
         <small>Discovery done</small>
-        <span class="status-badge status-aug">Aug / Sept</span>
+        <span class="status-badge status-future">Aug / Sept</span>
       </div>
       <div class="node">
         <strong>Email (Klaviyo)</strong>
         <small>Awaiting input</small>
-        <span class="status-badge status-coming">In progress</span>
+        <span class="status-badge status-progress">In progress</span>
       </div>
       <div class="node">
         <strong>WhatsApp</strong>
         <small>v1 scope locked</small>
-        <span class="status-badge status-aug">Aug / Sept</span>
+        <span class="status-badge status-future">Aug / Sept</span>
       </div>
       <div class="node">
         <strong>Video content</strong>
         <small>Helps Joe ideate &amp; plan</small>
-        <span class="status-badge status-aug">September</span>
+        <span class="status-badge status-future">September</span>
       </div>
     </div>
 
@@ -283,12 +309,12 @@
       <div class="node">
         <strong>Quarterly Campaign Brief</strong>
         <small>strategic frame</small>
-        <span class="status-badge status-aug">September</span>
+        <span class="status-badge status-future">September</span>
       </div>
       <div class="node">
         <strong>Strategy / Brainstorming</strong>
         <small>Rosa's thinking tool</small>
-        <span class="status-badge status-aug">Sept — Oct live</span>
+        <span class="status-badge status-future">Sept — Oct live</span>
       </div>
     </div>
   </div>
@@ -318,8 +344,8 @@
 <div class="legend">
   <span class="legend-item"><span class="status-badge status-live">Live</span> in active team use</span>
   <span class="legend-item"><span class="status-badge status-build">In build</span> being built this month</span>
-  <span class="legend-item"><span class="status-badge status-coming">In progress</span> awaiting input</span>
-  <span class="legend-item"><span class="status-badge status-aug">August / September</span> scheduled next</span>
+  <span class="legend-item"><span class="status-badge status-progress">In progress</span> awaiting input</span>
+  <span class="legend-item"><span class="status-badge status-future">August / September</span> scheduled next</span>
 </div>
 
 <h2>What's happening this month</h2>
