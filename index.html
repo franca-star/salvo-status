@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Salvo 1968 — Marketing Operations build status</title>
+<title>Salvo 1968 — the Claude marketing system</title>
 <style>
   * { box-sizing: border-box; }
   :root {
@@ -20,6 +20,11 @@
     --status-build: #C1811E;
     --status-progress: #C3C7B4;
     --status-future: #21777F;
+
+    --warn: #A84432;
+    --warn-bg: #FBEDE8;
+    --warn-border: #E0B4A5;
+    --good: #687343;
   }
   body {
     background: var(--bg);
@@ -50,172 +55,104 @@
   p { margin: 0 0 0.75rem; }
 
   /* Header */
-  header { margin-bottom: 1rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
-  .logos {
-    display: flex;
-    align-items: center;
-    gap: 0.9rem;
-    margin-bottom: 1.5rem;
-  }
-  .logos img {
-    height: 64px;
-    width: auto;
-    display: block;
-  }
-  .logos .sep {
-    color: var(--ink-mute);
-    font-family: Georgia, serif;
-    font-size: 1.2rem;
-    font-weight: 300;
-  }
+  header { margin-bottom: 0; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+  .logos { display: flex; align-items: center; gap: 0.9rem; margin-bottom: 1.5rem; }
+  .logos img { height: 64px; width: auto; display: block; }
+  .logos .sep { color: var(--ink-mute); font-family: Georgia, serif; font-size: 1.2rem; font-weight: 300; }
   .subtitle { color: var(--ink-soft); font-size: 1rem; margin-top: 0.25rem; }
+  .tab-intro { color: var(--ink-soft); font-size: 1.05rem; margin: 1.75rem 0 0; }
 
-  /* System diagram */
+  /* Tabs */
+  .tabs { display: flex; gap: 0.25rem; margin-top: 1.5rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .tab-btn {
+    font-family: Georgia, 'Times New Roman', serif; font-size: 1.05rem;
+    background: none; border: none; padding: 0.65rem 1.1rem; cursor: pointer;
+    color: var(--ink-mute); border-bottom: 2px solid transparent; margin-bottom: -1px;
+  }
+  .tab-btn:hover { color: var(--ink-soft); }
+  .tab-btn.active { color: var(--ink); border-bottom-color: var(--gold); }
+  .tabpanel { display: none; }
+  .tabpanel.active { display: block; }
+
+  /* Mindset strip */
+  .mindset {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem 2rem;
+    background: var(--ink); color: var(--bg);
+    border-radius: 4px; border-bottom: 3px solid var(--gold);
+    padding: 1.1rem 1.5rem; margin-top: 0.5rem;
+    font-size: 0.95rem; text-align: center;
+  }
+  .mindset span { white-space: nowrap; }
+  .mindset b { color: var(--gold-soft); font-weight: 600; }
+
+  /* Diagram */
   .diagram {
-    background: var(--paper);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 2.5rem 1.5rem;
-    margin-top: 0.5rem;
+    background: var(--paper); border: 1px solid var(--border);
+    border-radius: 4px; padding: 2.5rem 1.5rem; margin-top: 0.5rem;
   }
   .diagram-row { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; align-items: stretch; }
   .diagram-row.split { gap: 2.5rem; align-items: stretch; }
-  .arrow {
-    text-align: center;
-    color: var(--gold);
-    font-size: 1.3rem;
-    padding: 0.4rem 0;
-    letter-spacing: 1em;
-    font-weight: 600;
-  }
+  .flow-row { display: flex; justify-content: center; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+  .arrow { text-align: center; color: var(--gold); font-size: 1.3rem; padding: 0.4rem 0; letter-spacing: 1em; font-weight: 600; }
+  .arrow-h { color: var(--gold); font-size: 1.5rem; font-weight: 600; padding: 0 0.2rem; align-self: center; }
   .node {
-    background: var(--paper);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 0.75rem 1rem;
-    text-align: center;
-    min-width: 180px;
-    font-size: 0.9rem;
-    color: var(--ink);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    background: var(--paper); border: 1px solid var(--border); border-radius: 4px;
+    padding: 0.75rem 1rem; text-align: center; min-width: 180px; font-size: 0.9rem;
+    color: var(--ink); display: flex; flex-direction: column; justify-content: center;
   }
   .node strong { display: block; font-weight: 600; }
   .node small { display: block; color: var(--ink-mute); margin-top: 0.2rem; font-size: 0.78rem; }
   .node.hub {
-    background: var(--ink);
-    color: var(--bg);
-    border-color: var(--ink);
-    padding: 1rem 1.5rem;
-    min-width: 320px;
-    border-bottom: 3px solid var(--gold);
+    background: var(--ink); color: var(--bg); border-color: var(--ink);
+    padding: 1rem 1.5rem; min-width: 320px; border-bottom: 3px solid var(--gold);
   }
   .node.hub small { color: var(--gold-soft); }
-  .node.gate {
-    background: var(--gold);
-    border-color: var(--gold);
-    color: var(--ink);
-    padding: 1rem 1.5rem;
-    min-width: 240px;
-  }
+  .node.gate { background: var(--gold); border-color: var(--gold); color: var(--ink); padding: 1rem 1.5rem; min-width: 240px; }
   .node.gate small { color: var(--ink); opacity: 0.85; }
-  .node.outputs {
-    background: var(--paper);
-    border: 2px solid var(--ink);
-    padding: 1rem 1.5rem;
-    min-width: 240px;
-  }
-  .node.person {
-    background: var(--bg);
-    border-color: var(--gold);
-    min-width: 160px;
-  }
+  .node.outputs { background: var(--paper); border: 2px solid var(--ink); padding: 1rem 1.5rem; min-width: 240px; }
+  .node.person { background: var(--bg); border-color: var(--gold); min-width: 160px; }
+  .node.tool { border: 2px solid var(--gold); background: #FEFCF7; }
+  .node.content { border: 2px solid var(--ink); }
+  .node.alt { border-color: var(--gold); background: var(--bg); }
+  .node.ghost { border-style: dashed; color: var(--ink-soft); background: transparent; }
+
+  /* One-off branch */
+  .branch { margin-top: 1.75rem; padding-top: 1.5rem; border-top: 1px dashed var(--border); }
+  .branch-label { text-align: center; font-family: Georgia, serif; font-style: italic; color: var(--ink-soft); font-size: 0.9rem; margin-bottom: 0.9rem; }
+
+  /* Rule + don't */
+  .rule { background: var(--gold); color: var(--ink); border-radius: 4px; padding: 1rem 1.5rem; margin-top: 1.75rem; text-align: center; font-size: 1rem; font-weight: 600; }
+  .rule small { display: block; font-weight: 400; font-size: 0.85rem; margin-top: 0.2rem; opacity: 0.85; }
+  .dont { background: var(--warn-bg); border: 1px solid var(--warn-border); border-left: 3px solid var(--warn); color: var(--warn); border-radius: 4px; padding: 0.9rem 1.2rem; margin-top: 1rem; font-size: 0.92rem; }
+  .dont strong { color: var(--warn); }
 
   /* Status badges */
-  .status-badge {
-    display: inline-block;
-    font-size: 0.65rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 0.18rem 0.5rem;
-    border-radius: 2px;
-    margin-top: 0.5rem;
-    line-height: 1.4;
-  }
+  .status-badge { display: inline-block; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.18rem 0.5rem; border-radius: 2px; margin-top: 0.5rem; line-height: 1.4; }
   .status-live { background: var(--status-live); color: white; }
   .status-build { background: var(--status-build); color: white; }
   .status-progress { background: var(--status-progress); color: var(--ink); }
   .status-future { background: var(--status-future); color: white; }
 
-  .group {
-    background: var(--bg);
-    border: 1px dashed var(--gold);
-    border-radius: 6px;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    min-width: 240px;
-  }
-  .group-label {
-    font-family: Georgia, serif;
-    font-size: 0.85rem;
-    color: var(--ink-soft);
-    text-align: center;
-    margin-bottom: 0.25rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-  .loop-note {
-    text-align: center;
-    margin-top: 1.5rem;
-    padding-top: 1rem;
-    border-top: 1px dashed var(--border);
-    font-size: 0.85rem;
-    color: var(--ink-soft);
-    font-style: italic;
-  }
+  .group { background: var(--bg); border: 1px dashed var(--gold); border-radius: 6px; padding: 1rem; display: flex; flex-direction: column; gap: 0.6rem; min-width: 240px; }
+  .group-label { font-family: Georgia, serif; font-size: 0.85rem; color: var(--ink-soft); text-align: center; margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.1em; }
+  .loop-note { text-align: center; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px dashed var(--border); font-size: 0.85rem; color: var(--ink-soft); font-style: italic; }
 
-  /* Status legend */
-  .legend {
-    display: flex;
-    gap: 1.5rem;
-    margin-top: 1.5rem;
-    flex-wrap: wrap;
-    font-size: 0.8rem;
-    color: var(--ink-soft);
-    padding: 0.75rem 0;
-  }
+  .legend { display: flex; gap: 1.5rem; margin-top: 1.5rem; flex-wrap: wrap; font-size: 0.8rem; color: var(--ink-soft); padding: 0.75rem 0; }
   .legend-item { display: flex; align-items: center; gap: 0.4rem; }
 
   /* Cards */
-  .card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1rem;
-    margin-top: 0.5rem;
-  }
-  .card {
-    background: var(--paper);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 1rem 1.2rem;
-    border-left: 3px solid var(--gold);
-  }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 0.5rem; }
+  .card { background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 1rem 1.2rem; border-left: 3px solid var(--gold); }
   .card h3 { font-family: Georgia, serif; font-size: 1.05rem; }
   .card p { font-size: 0.92rem; color: var(--ink-soft); margin: 0.35rem 0 0; }
+  .card em { color: var(--ink); font-style: italic; }
+  .card.right { border-left-color: var(--good); }
+  .card.wrong { border-left-color: var(--warn); }
+  .card .tag { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .card.right .tag { color: var(--good); }
+  .card.wrong .tag { color: var(--warn); }
 
-  /* Footer */
-  footer {
-    margin-top: 4rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border);
-    color: var(--ink-mute);
-    font-size: 0.85rem;
-    text-align: center;
-  }
+  footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); color: var(--ink-mute); font-size: 0.85rem; text-align: center; }
   footer strong { color: var(--ink); }
 
   @media (max-width: 760px) {
@@ -223,6 +160,8 @@
     .diagram-row.split { flex-direction: column; align-items: stretch; }
     .group { min-width: auto; }
     .logos img { height: 48px; }
+    .node.hub { min-width: auto; }
+    .arrow-h { transform: rotate(90deg); padding: 0.2rem 0; }
   }
 </style>
 </head>
@@ -234,168 +173,265 @@
     <span class="sep">×</span>
     <img src="salvo-logo.png" alt="Salvo 1968">
   </div>
-  <h1>Salvo 1968 — Marketing operations build</h1>
-  <p class="subtitle">An at-a-glance view of the system being built with Lionstar Social. Each component shows its current status.</p>
+  <h1>Salvo 1968 — the Claude marketing system</h1>
+  <p class="subtitle">How the tools work, and where the build is up to. Built with Lionstar Social.</p>
 </header>
 
-<h2>The system</h2>
-<div class="diagram">
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('tab-how', this)">How it works</button>
+  <button class="tab-btn" onclick="showTab('tab-system', this)">The system &amp; status</button>
+</div>
 
-  <div class="diagram-row">
-    <div class="node person"><strong>Salvo marketing team</strong><small>primary users</small></div>
-    <div class="node person"><strong>Rosa</strong><small>reviews by exception</small></div>
-    <div class="node person"><strong>Lionstar</strong><small>builds and guides</small></div>
+<!-- TAB 1 — HOW IT WORKS -->
+<div id="tab-how" class="tabpanel active">
+
+  <p class="tab-intro">You've got a brief. You've got a tool with the brand built in to help you create content. Use them together and keep the prompt simple.</p>
+
+  <h2>The mindset</h2>
+  <div class="mindset">
+    <span><b>The tools already hold the brand</b></span>
+    <span><b>Start small</b> — a goal + the brief</span>
+    <span><b>Let Claude ask you</b> the questions</span>
+    <span><b>One job, one fresh chat</b></span>
   </div>
 
-  <div class="arrow">↓</div>
+  <h2>The flow</h2>
+  <div class="diagram">
 
-  <div class="diagram-row">
-    <div class="node hub">
-      <strong>Knowledge hub</strong>
-      <small>single source of truth — personas, brand rules, quality criteria</small>
-      <span class="status-badge status-live">Live</span>
+    <div class="flow-row">
+      <div class="node hub">
+        <strong>The brand brain</strong>
+        <small>built into every tool — tone of voice, the 4 personas, brand rules, standing messages</small>
+      </div>
+    </div>
+
+    <div class="arrow">↓</div>
+
+    <div class="flow-row">
+      <div class="node"><strong>Rosa's Monthly Brief</strong><small>the campaign — it's all in here</small></div>
+      <span class="arrow-h">→</span>
+      <div class="node tool"><strong>Your channel tool</strong><small>Instagram · Email · WhatsApp</small></div>
+      <span class="arrow-h">→</span>
+      <div class="node content"><strong>Your content</strong><small>posts, mailers, broadcasts</small></div>
+    </div>
+
+    <div class="branch">
+      <div class="branch-label">No brief for it yet? (a one-off, a reactive post, a single story)</div>
+      <div class="flow-row">
+        <div class="node"><strong>A one-off</strong><small>not in the monthly brief</small></div>
+        <span class="arrow-h">→</span>
+        <div class="node alt"><strong>Content Brief</strong><small>makes you a brief</small></div>
+        <span class="arrow-h">→</span>
+        <div class="node ghost"><strong>then into your channel tool</strong><small>(back to the row above)</small></div>
+      </div>
+    </div>
+
+    <div class="rule">
+      In the monthly brief → go straight to your tool. Not in it → Content Brief first.
+      <small>The Content Brief is only there to make you a brief when you don't already have one.</small>
+    </div>
+
+    <div class="dont">
+      <strong>Don't</strong> use the Content Brief to write content — you'll just get the brief back. It makes briefs; your channel tool makes content.
+    </div>
+
+  </div>
+
+  <h2>Same brief, two tools</h2>
+  <div class="card-grid">
+    <div class="card wrong">
+      <span class="tag">The wrong way</span>
+      <h3>Brief → Content Brief → a copy of the brief</h3>
+      <p>Put Rosa's brief into the Content Brief and ask for content, and it hands the brief straight back. It's a brief-maker, so that's all you get.</p>
+    </div>
+    <div class="card right">
+      <span class="tag">The right way</span>
+      <h3>Brief → your channel tool → your content</h3>
+      <p>Feed Rosa's brief to your tool and it picks up where you left off: <em>'Feed Post 2 done, Carousel 2 is next up — Italian Deli and Pragmatic Operator, Strategic lens'</em> and offers to draft it.</p>
     </div>
   </div>
 
-  <div class="arrow">↓</div>
+</div>
 
-  <div class="diagram-row split">
-    <div class="group">
-      <div class="group-label">Skills</div>
-      <div class="node">
-        <strong>Instagram</strong>
-        <small>/draft-b2b-instagram</small>
+<!-- TAB 2 — THE SYSTEM & STATUS -->
+<div id="tab-system" class="tabpanel">
+
+  <p class="tab-intro">An at-a-glance view of the system being built with Lionstar Social. Each component shows its current status.</p>
+
+  <h2>The system</h2>
+  <div class="diagram">
+
+    <div class="diagram-row">
+      <div class="node person"><strong>Salvo marketing team</strong><small>primary users</small></div>
+      <div class="node person"><strong>Rosa</strong><small>reviews by exception</small></div>
+      <div class="node person"><strong>Lionstar</strong><small>builds and guides</small></div>
+    </div>
+
+    <div class="arrow">↓</div>
+
+    <div class="diagram-row">
+      <div class="node hub">
+        <strong>Knowledge hub</strong>
+        <small>single source of truth — personas, brand rules, quality criteria</small>
         <span class="status-badge status-live">Live</span>
       </div>
-      <div class="node">
-        <strong>LinkedIn</strong>
-        <small>Discovery done</small>
-        <span class="status-badge status-future">Aug / Sept</span>
+    </div>
+
+    <div class="arrow">↓</div>
+
+    <div class="diagram-row split">
+      <div class="group">
+        <div class="group-label">Skills</div>
+        <div class="node">
+          <strong>Instagram</strong>
+          <small>/draft-b2b-instagram · personas v1.1</small>
+          <span class="status-badge status-live">Live</span>
+        </div>
+        <div class="node">
+          <strong>LinkedIn</strong>
+          <small>Discovery done</small>
+          <span class="status-badge status-future">Aug / Sept</span>
+        </div>
+        <div class="node">
+          <strong>Email</strong>
+          <small>Interim project in build for Vicky; full tool waits for HubSpot</small>
+          <span class="status-badge status-build">Interim — in build</span>
+        </div>
+        <div class="node">
+          <strong>WhatsApp</strong>
+          <small>v1 scope locked</small>
+          <span class="status-badge status-future">Aug / Sept</span>
+        </div>
+        <div class="node">
+          <strong>Video Producer Project</strong>
+          <small>Sparring tool for Joe's ideas</small>
+          <span class="status-badge status-future">September</span>
+        </div>
       </div>
-      <div class="node">
-        <strong>Email</strong>
-        <small>Post-HubSpot, not Klaviyo</small>
-        <span class="status-badge status-future">Sept+</span>
-      </div>
-      <div class="node">
-        <strong>WhatsApp</strong>
-        <small>v1 scope locked</small>
-        <span class="status-badge status-future">Aug / Sept</span>
-      </div>
-      <div class="node">
-        <strong>Video Producer Project</strong>
-        <small>Sparring tool for Joe's ideas</small>
-        <span class="status-badge status-future">September</span>
+
+      <div class="group">
+        <div class="group-label">Projects</div>
+        <div class="node">
+          <strong>Content Brief</strong>
+          <small>per-story brief builder · personas v1.1</small>
+          <span class="status-badge status-live">Live</span>
+        </div>
+        <div class="node">
+          <strong>Monthly Brief</strong>
+          <small>operational frame · deployed, Sammontana tested</small>
+          <span class="status-badge status-live">Live</span>
+        </div>
+        <div class="node">
+          <strong>House of Pasta Campaign</strong>
+          <small>first campaign brief — awaiting strategy</small>
+          <span class="status-badge status-future">Launch end Sept</span>
+        </div>
+        <div class="node">
+          <strong>Quarterly Campaign Brief</strong>
+          <small>monthly first, for now</small>
+          <span class="status-badge status-future">Deferred</span>
+        </div>
+        <div class="node">
+          <strong>Strategy / Brainstorming</strong>
+          <small>Rosa's thinking tool</small>
+          <span class="status-badge status-future">Sept — Oct live</span>
+        </div>
       </div>
     </div>
 
-    <div class="group">
-      <div class="group-label">Projects</div>
-      <div class="node">
-        <strong>Content Brief</strong>
-        <small>per-story brief builder</small>
+    <div class="arrow">↓</div>
+
+    <div class="diagram-row">
+      <div class="node gate">
+        <strong>Quality gate</strong>
+        <small>the bar everything passes — brand, voice, commercial intent</small>
         <span class="status-badge status-live">Live</span>
       </div>
-      <div class="node">
-        <strong>Monthly Brief</strong>
-        <small>operational frame</small>
-        <span class="status-badge status-build">In build — deploying</span>
-      </div>
-      <div class="node">
-        <strong>House of Pasta Campaign</strong>
-        <small>first campaign brief — awaiting strategy</small>
-        <span class="status-badge status-future">Launch end Sept</span>
-      </div>
-      <div class="node">
-        <strong>Quarterly Campaign Brief</strong>
-        <small>monthly first, for now</small>
-        <span class="status-badge status-future">Deferred</span>
-      </div>
-      <div class="node">
-        <strong>Strategy / Brainstorming</strong>
-        <small>Rosa's thinking tool</small>
-        <span class="status-badge status-future">Sept — Oct live</span>
+    </div>
+
+    <div class="arrow">↓</div>
+
+    <div class="diagram-row">
+      <div class="node outputs">
+        <strong>Outputs</strong>
+        <small>content, briefs, performance view</small>
       </div>
     </div>
+
+    <div class="loop-note">↑ learnings loop back into the Knowledge hub so the system keeps getting sharper</div>
   </div>
 
-  <div class="arrow">↓</div>
+  <div class="legend">
+    <span class="legend-item"><span class="status-badge status-live">Live</span> in active team use</span>
+    <span class="legend-item"><span class="status-badge status-build">In build</span> being built this month</span>
+    <span class="legend-item"><span class="status-badge status-progress">In progress</span> awaiting input</span>
+    <span class="legend-item"><span class="status-badge status-future">August / September</span> scheduled next</span>
+  </div>
 
-  <div class="diagram-row">
-    <div class="node gate">
-      <strong>Quality gate</strong>
-      <small>the bar everything passes — brand, voice, commercial intent</small>
-      <span class="status-badge status-live">Live</span>
+  <h2>What's happening this month</h2>
+  <div class="card-grid">
+
+    <div class="card">
+      <h3>Monthly Brief project — live</h3>
+      <p>Reverse-engineered from Rosa's signed-off Rummo brief. Deployed to the team and tested on the August Sammontana brief with a strong result. The operational frame that keeps every channel aligned to the month's priorities.</p>
     </div>
-  </div>
 
-  <div class="arrow">↓</div>
-
-  <div class="diagram-row">
-    <div class="node outputs">
-      <strong>Outputs</strong>
-      <small>content, briefs, performance view</small>
+    <div class="card">
+      <h3>Personas v1.1 — signed off</h3>
+      <p>Signed off by Rosa and Jay. Four buyer personas (3 existing + the new Italian Deli / Cafe), with real customer examples, customer voice from reviews, buyer-lens overlay and commercial focus per persona. A set of visual reference cards is now shared with the team.</p>
     </div>
+
+    <div class="card">
+      <h3>Content Brief &amp; Instagram — on personas v1.1</h3>
+      <p>Both updated to the signed-off v1.1 personas and live for the team, so every brief and every post threads the four personas and Jay's commercial framing.</p>
+    </div>
+
+    <div class="card">
+      <h3>Interim Email tool for Vicky + a team guide</h3>
+      <p>A stopgap Email project so Vicky has brand-aware support now, ahead of the full email tool (which waits for HubSpot). Alongside it, a short 'how the system works' guide so the team uses the tools the right way.</p>
+    </div>
+
+    <div class="card">
+      <h3>House of Pasta — Campaign Brief project</h3>
+      <p>The first proper Campaign Brief project, built around the House of Pasta launch — a separate division with its own landing page, brand identity and social handle. Tasting 13 July, launch end September. We build the brief from Rosa's strategy once it's ready.</p>
+    </div>
+
   </div>
 
-  <div class="loop-note">↑ learnings loop back into the Knowledge hub so the system keeps getting sharper</div>
-</div>
+  <h2>What's coming next</h2>
+  <div class="card-grid">
 
-<div class="legend">
-  <span class="legend-item"><span class="status-badge status-live">Live</span> in active team use</span>
-  <span class="legend-item"><span class="status-badge status-build">In build</span> being built this month</span>
-  <span class="legend-item"><span class="status-badge status-progress">In progress</span> awaiting input</span>
-  <span class="legend-item"><span class="status-badge status-future">August / September</span> scheduled next</span>
-</div>
+    <div class="card">
+      <h3>August / September — channel tools</h3>
+      <p>LinkedIn and WhatsApp tools built once the brief structure is stable, so they ladder up to the new framework cleanly. The full email tool waits until Salvo is on HubSpot (not before).</p>
+    </div>
 
-<h2>What's happening this month</h2>
-<div class="card-grid">
+    <div class="card">
+      <h3>September — operations layer</h3>
+      <p>Quarterly Campaign Brief project, Strategy / Brainstorming project for Rosa, Design Brief workflow for Manuela, marketing SOPs, performance feedback loop.</p>
+    </div>
 
-  <div class="card">
-    <h3>House of Pasta — Campaign Brief project</h3>
-    <p>The first proper Campaign Brief project, built around the House of Pasta launch — a separate division with its own landing page, brand identity and social handle. Tasting 13 July, launch end September. We build the brief from Rosa's strategy once it's ready. Sets the template for how future campaigns get briefed.</p>
-  </div>
+    <div class="card">
+      <h3>Q4 — tools and strategy</h3>
+      <p>HubSpot integration scoping, basic reporting dashboard, governance document, trends briefings, 2027 roadmap proposal.</p>
+    </div>
 
-  <div class="card">
-    <h3>Monthly Brief project — built</h3>
-    <p>Reverse-engineered from Rosa's signed-off Rummo brief. The project is being set up now, with the August Sammontana brief as the first live test. Operational frame that keeps every channel aligned to the month's priorities.</p>
-  </div>
-
-  <div class="card">
-    <h3>Content Brief Project — June iteration</h3>
-    <p>Adding prompts for buyer lens, product role and commercial objective so every brief threads Jay's commercial framing through to the content.</p>
-  </div>
-
-  <div class="card">
-    <h3>Personas v1.1 — with Rosa + Jay for sign-off</h3>
-    <p>Updated buyer personas: 4 personas (3 existing + new Italian Deli / Cafe), real customer examples, customer voice from reviews, buyer lens overlay and commercial focus per persona. Plus a set of visual reference cards for the team. With Rosa and Jay for sign-off, then folded into the system knowledge hub.</p>
-  </div>
-
-</div>
-
-<h2>What's coming next</h2>
-<div class="card-grid">
-
-  <div class="card">
-    <h3>August / September — channel skills</h3>
-    <p>LinkedIn and WhatsApp skills built once the brief structure is stable, so they ladder up to the new framework cleanly. Email skill waits until Salvo is on HubSpot (not before).</p>
-  </div>
-
-  <div class="card">
-    <h3>September — operations layer</h3>
-    <p>Quarterly Campaign Brief project, Strategy / Brainstorming project for Rosa, Design Brief workflow for Manuela, marketing SOPs, performance feedback loop.</p>
-  </div>
-
-  <div class="card">
-    <h3>Q4 — Tools and strategy</h3>
-    <p>HubSpot integration scoping, basic reporting dashboard, governance document, trends briefings, 2027 roadmap proposal.</p>
   </div>
 
 </div>
 
 <footer>
-  <p><strong>Salvo 1968 × Lionstar Social</strong> &nbsp;·&nbsp; Last updated 1 July 2026 &nbsp;·&nbsp; Refresh anytime to see the latest</p>
+  <p><strong>Salvo 1968 × Lionstar Social</strong> &nbsp;·&nbsp; Last updated 3 July 2026 &nbsp;·&nbsp; Refresh anytime to see the latest</p>
 </footer>
+
+<script>
+  function showTab(id, btn) {
+    document.querySelectorAll('.tabpanel').forEach(function (p) { p.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
 
 </body>
 </html>
