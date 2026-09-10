@@ -130,6 +130,7 @@
   .status-badge { display: inline-block; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.18rem 0.5rem; border-radius: 2px; margin-top: 0.5rem; line-height: 1.4; }
   .status-live { background: var(--status-live); color: white; }
   .status-build { background: var(--status-build); color: white; }
+  .status-ready { background: #1f5f8b; color: #fff; }
   .status-progress { background: var(--status-progress); color: var(--ink); }
   .status-future { background: var(--status-future); color: white; }
 
@@ -179,7 +180,7 @@
     <span class="sep">×</span>
     <img src="salvo-logo.png" alt="Salvo 1968">
   </div>
-  <h1>Salvo 1968 — the Claude marketing system</h1>
+  <h1>Salvo 1968: the Claude marketing system</h1>
   <p class="subtitle">How the tools work, and where the build is up to. Built with Lionstar Social.</p>
   <a class="feedback-btn" href="https://forms.gle/KXhcYG7V8eyHjAfF6" target="_blank" rel="noopener">Report an issue or give feedback</a>
 </header>
@@ -192,12 +193,26 @@
 <!-- TAB 1 — HOW IT WORKS -->
 <div id="tab-how" class="tabpanel active">
 
-  <p class="tab-intro">You've got a brief. You've got a tool with the brand built in to help you create content. Use them together and keep the prompt simple.</p>
+  <p class="tab-intro"><strong>Every piece of work starts with a brief.</strong> The brief is where the thinking happens once: who it's for, what we're saying, what we want to happen, what's in it, when. Write it once and everyone works from the same page. Then a writing tool turns it into copy for your channel. The tools already hold the brand, so you bring the brief and keep the prompt simple.</p>
+
+  <h2>Two kinds of tool</h2>
+  <div class="card-grid">
+    <div class="card">
+      <span class="tag">Planning tools</span>
+      <h3>Turn intent into a brief</h3>
+      <p><strong>Monthly Brief</strong> (the month's activity, Rosa) · <strong>Campaign Brief</strong> (an integrated campaign across every channel, Rosa; House of Pasta was the first) · <strong>Content Brief</strong> (a quick brief for a one-off that isn't in either, usually Liv)</p>
+    </div>
+    <div class="card">
+      <span class="tag">Writing tools</span>
+      <h3>Turn a brief into copy for one channel</h3>
+      <p><strong>Instagram</strong> (Liv) · <strong>LinkedIn</strong> (Liv) · <strong>WhatsApp</strong> (Egle) · <strong>Email</strong> (Vicky, with Lisa). Each one holds the brand, the personas and the rules for its channel, and asks you for what it's missing.</p>
+    </div>
+  </div>
 
   <h2>The mindset</h2>
   <div class="mindset">
     <span><b>The tools already hold the brand</b></span>
-    <span><b>Start small</b> — a goal + the brief</span>
+    <span><b>Start small:</b> a goal and the brief</span>
     <span><b>Let Claude ask you</b> the questions</span>
     <span><b>One job, one fresh chat</b></span>
   </div>
@@ -208,38 +223,38 @@
     <div class="flow-row">
       <div class="node hub">
         <strong>The brand brain</strong>
-        <small>built into every tool — tone of voice, the 4 personas, brand rules, standing messages</small>
+        <small>built into every tool: tone of voice, the 4 personas, brand rules, standing messages</small>
       </div>
     </div>
 
     <div class="arrow">↓</div>
 
     <div class="flow-row">
-      <div class="node"><strong>Rosa's Monthly Brief</strong><small>the campaign — it's all in here</small></div>
+      <div class="node"><strong>Rosa's brief</strong><small>Monthly Brief or Campaign Brief</small></div>
       <span class="arrow-h">→</span>
-      <div class="node tool"><strong>Your channel tool</strong><small>Instagram · Email · WhatsApp</small></div>
+      <div class="node tool"><strong>Your writing tool</strong><small>Instagram · LinkedIn · WhatsApp · Email</small></div>
       <span class="arrow-h">→</span>
       <div class="node content"><strong>Your content</strong><small>posts, mailers, broadcasts</small></div>
     </div>
 
     <div class="branch">
-      <div class="branch-label">No brief for it yet? (a one-off, a reactive post, a single story)</div>
+      <div class="branch-label">No brief for this piece? (a one-off, a reactive post, a single supplier story)</div>
       <div class="flow-row">
-        <div class="node"><strong>A one-off</strong><small>not in the monthly brief</small></div>
+        <div class="node"><strong>A one-off</strong><small>not in the monthly or campaign brief</small></div>
         <span class="arrow-h">→</span>
-        <div class="node alt"><strong>Content Brief</strong><small>makes you a brief</small></div>
+        <div class="node alt"><strong>Content Brief tool</strong><small>makes you a quick brief, about five minutes</small></div>
         <span class="arrow-h">→</span>
-        <div class="node ghost"><strong>then into your channel tool</strong><small>(back to the row above)</small></div>
+        <div class="node ghost"><strong>then into your writing tool</strong><small>(back to the row above)</small></div>
       </div>
     </div>
 
     <div class="rule">
-      In the monthly brief → go straight to your tool. Not in it → Content Brief first.
-      <small>The Content Brief is only there to make you a brief when you don't already have one.</small>
+      Been given a brief? Go straight to your writing tool. No brief for this piece? Make a quick one in the Content Brief tool first.
+      <small>The Content Brief tool makes briefs. It doesn't write posts, mailers or broadcasts.</small>
     </div>
 
     <div class="dont">
-      <strong>Don't</strong> use the Content Brief to write content — you'll just get the brief back. It makes briefs; your channel tool makes content.
+      <strong>Don't</strong> ask the Content Brief tool for content. It's a planning tool, so it hands you a brief. Your writing tool makes the content.
     </div>
 
   </div>
@@ -248,22 +263,21 @@
   <div class="card-grid">
     <div class="card wrong">
       <span class="tag">The wrong way</span>
-      <h3>Brief → Content Brief → a copy of the brief</h3>
-      <p>Put Rosa's brief into the Content Brief and ask for content, and it hands the brief straight back. It's a brief-maker, so that's all you get.</p>
+      <h3>Rosa's brief → Content Brief tool → the same brief back</h3>
+      <p>Paste a finished brief into a planning tool and ask for a post, and you get the brief handed back to you, reworded. That's what happened with the Rummo brief in July. A planning tool can only make briefs.</p>
     </div>
     <div class="card right">
       <span class="tag">The right way</span>
-      <h3>Brief → your channel tool → your content</h3>
-      <p>Feed Rosa's brief to your tool and it picks up where you left off: <em>'Feed Post 2 done, Carousel 2 is next up — Italian Deli and Pragmatic Operator, Strategic lens'</em> and offers to draft it.</p>
+      <h3>Rosa's brief → your writing tool → your content</h3>
+      <p>Paste the same brief into the Instagram tool and it picks up where the brief left off, names the next post in the plan ('Feed Post 2 done, Carousel 2 is next, for delis and multi-site owners') and offers to draft it.</p>
     </div>
   </div>
 
 </div>
 
-<!-- TAB 2 — THE SYSTEM & STATUS -->
 <div id="tab-system" class="tabpanel">
 
-  <p class="tab-intro">An at-a-glance view of the system being built with Lionstar Social. Each component shows its current status.</p>
+  <p class="tab-intro">The system being built with Lionstar Social, and where each part is today.</p>
 
   <h2>The system</h2>
   <div class="diagram">
@@ -279,7 +293,7 @@
     <div class="diagram-row">
       <div class="node hub">
         <strong>Knowledge hub</strong>
-        <small>single source of truth — personas, brand rules, quality criteria</small>
+        <small>single source of truth: personas, brand rules, quality criteria</small>
         <span class="status-badge status-live">Live</span>
       </div>
     </div>
@@ -296,8 +310,8 @@
         </div>
         <div class="node">
           <strong>LinkedIn</strong>
-          <small>/draft-b2b-linkedin · built and tested · installing with Liv 14 Sept</small>
-          <span class="status-badge status-build">In build</span>
+          <small>/draft-b2b-linkedin · installing with Liv 14 Sept</small>
+          <span class="status-badge status-ready">Ready to deploy</span>
         </div>
         <div class="node">
           <strong>Email</strong>
@@ -306,13 +320,13 @@
         </div>
         <div class="node">
           <strong>WhatsApp</strong>
-          <small>/draft-b2b-whatsapp · built and tested · installing with Egle 14 Sept</small>
-          <span class="status-badge status-build">In build</span>
+          <small>/draft-b2b-whatsapp · installing with Egle 14 Sept</small>
+          <span class="status-badge status-ready">Ready to deploy</span>
         </div>
         <div class="node">
           <strong>Video Producer Project</strong>
-          <small>Sparring tool for Joe's ideas</small>
-          <span class="status-badge status-future">September</span>
+          <small>Sparring tool for Joe's story ideas</small>
+          <span class="status-badge status-future">Scheduled</span>
         </div>
       </div>
 
@@ -330,13 +344,13 @@
         </div>
         <div class="node">
           <strong>Integrated Campaign Brief</strong>
-          <small>House of Pasta is the first campaign — draft brief produced 26 Aug</small>
+          <small>House of Pasta first, brief 26 Aug, launch 1 Oct</small>
           <span class="status-badge status-live">Live</span>
         </div>
         <div class="node">
           <strong>Strategy / Brainstorming</strong>
           <small>Rosa's thinking tool</small>
-          <span class="status-badge status-future">Sept — Oct live</span>
+          <span class="status-badge status-progress">Scoping with Rosa</span>
         </div>
       </div>
     </div>
@@ -346,7 +360,7 @@
     <div class="diagram-row">
       <div class="node gate">
         <strong>Quality gate</strong>
-        <small>the bar everything passes — brand, voice, commercial intent</small>
+        <small>the bar everything passes: brand, voice, commercial intent</small>
         <span class="status-badge status-live">Live</span>
       </div>
     </div>
@@ -365,37 +379,41 @@
 
   <div class="legend">
     <span class="legend-item"><span class="status-badge status-live">Live</span> in active team use</span>
-    <span class="legend-item"><span class="status-badge status-build">In build</span> being built this month</span>
-    <span class="legend-item"><span class="status-badge status-progress">In progress</span> awaiting input</span>
-    <span class="legend-item"><span class="status-badge status-future">August / September</span> scheduled next</span>
+    <span class="legend-item"><span class="status-badge status-ready">Ready to deploy</span> built and tested, being installed</span>
+    <span class="legend-item"><span class="status-badge status-build">In build</span> being built</span>
+    <span class="legend-item"><span class="status-badge status-progress">Scoping</span> shape being agreed</span>
+    <span class="legend-item"><span class="status-badge status-future">Scheduled</span> in the plan, not started</span>
   </div>
 
-  <h2>What's happening this month</h2>
+  <h2>What's happening in September</h2>
   <div class="card-grid">
 
     <div class="card">
-      <h3>Monthly Brief project — live</h3>
-      <p>Reverse-engineered from Rosa's signed-off Rummo brief. Deployed to the team and tested on the August Sammontana brief with a strong result. The operational frame that keeps every channel aligned to the month's priorities.</p>
+      <h3>Installed at the visit, 14 and 15 September</h3>
+      <ul>
+        <li>WhatsApp tool with Egle: broadcasts and carousels for Hello Charles, from a brief row</li>
+        <li>LinkedIn tool with Liv: posts, team and supplier stories, PDF carousels</li>
+        <li>Team session: where we are, the brief, the two kinds of tool</li>
+        <li>Half a day with Rosa: status, Q4 order, the industry trends briefing</li>
+      </ul>
     </div>
 
     <div class="card">
-      <h3>Personas v1.1 — signed off</h3>
-      <p>Signed off by Rosa and Jay. Four buyer personas (3 existing + the new Italian Deli / Cafe), with real customer examples, customer voice from reviews, buyer-lens overlay and commercial focus per persona. A set of visual reference cards is now shared with the team.</p>
+      <h3>House of Pasta, launching 1 October</h3>
+      <ul>
+        <li>Brief produced in the Campaign Brief tool on 26 August, the first campaign through it</li>
+        <li>Every channel works from the same brief: social, email, WhatsApp, paid, design, video</li>
+        <li>October's monthly brief builds around the launch, so Specials and the campaign tell one story</li>
+      </ul>
     </div>
 
     <div class="card">
-      <h3>Content Brief &amp; Instagram — on personas v1.1</h3>
-      <p>Both updated to the signed-off v1.1 personas and live for the team, so every brief and every post threads the four personas and Jay's commercial framing.</p>
-    </div>
-
-    <div class="card">
-      <h3>Interim Email tool for Vicky + a team guide</h3>
-      <p>A stopgap Email project, now live with the team, so Vicky has brand-aware support ahead of the full email tool (which waits for HubSpot). It learns from Lisa's craft standard and Salvo's best-performing past emails, and its first real newsletter has already shipped. Refinements continue from real sends.</p>
-    </div>
-
-    <div class="card">
-      <h3>Integrated Campaign Brief — live, House of Pasta first</h3>
-      <p>The campaign-level tool from the plan is now live and proven: Rosa ran the House of Pasta launch through it on 26 August and it produced the full draft brief in one working session. One integrated cross-channel brief: the story, the audience, the offer, the creative thread across every touchpoint, deliverables with owners and a clear list of what to confirm before launch. Sign-off first week of September, House of Pasta launches 1 October. The monthly brief then builds each month around the campaign, so October's Specials and the launch tell one story.</p>
+      <h3>Live and in use</h3>
+      <ul>
+        <li>Monthly Brief, Content Brief and Campaign Brief (the planning tools)</li>
+        <li>Instagram tool and the interim Email project (writing tools)</li>
+        <li>Personas v1.1, signed off, with the visual cards shared with the team</li>
+      </ul>
     </div>
 
   </div>
@@ -404,36 +422,27 @@
   <div class="card-grid">
 
     <div class="card">
-      <h3>August / September — channel tools</h3>
+      <h3>Rest of September</h3>
       <ul>
-        <li>WhatsApp tool (broadcast campaigns + cross-sell prompts): built and tested, installed with Egle at the 14 September visit</li>
-        <li>LinkedIn tool (posts, team and supplier stories, PDF carousels): built and tested, installed with Liv at the 14 September visit</li>
-        <li>Full Email tool — waits until Salvo is on HubSpot (not before)</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <h3>September — projects and operations</h3>
-      <ul>
-        <li>Video Producer project for Joe (story angles per brief)</li>
-        <li>Strategy / Brainstorming project for Rosa</li>
+        <li>Strategy tool for Rosa: shape agreed at the visit, then built</li>
+        <li>Industry trends briefing: what the trade press, ambassadors and competitors are saying, scoped with Rosa, pulled forward from Q4</li>
+        <li>Video Producer project for Joe: story angles per brief</li>
         <li>Design brief workflow for Manuela</li>
-        <li>Non-channel copy: homepage banners, Specials / Savers / launch PDF front pages, WhatsApp captions</li>
-        <li>Brand Spotlight blogs (article + LinkedIn, monthly theme)</li>
-        <li>Marketing SOPs and role clarity</li>
-        <li>Monthly performance feedback loop</li>
+        <li>Non-channel copy: homepage banners, Specials, Savers and launch PDF front pages, WhatsApp captions</li>
+        <li>Brand Spotlight blogs (article plus LinkedIn, monthly theme)</li>
+        <li>Full Email tool waits until Salvo is on HubSpot</li>
       </ul>
     </div>
 
     <div class="card">
-      <h3>Q4 — tools and strategy</h3>
+      <h3>Q4</h3>
       <ul>
+        <li>Industry trends briefing (hospitality, pizza, social)</li>
         <li>Product descriptions v1</li>
-        <li>Social media trends briefing</li>
-        <li>Hospitality and pizza industry trends briefing</li>
         <li>National holidays and industry calendar tool</li>
         <li>Reporting dashboard v1</li>
         <li>AI governance document v1</li>
+        <li>Marketing SOPs, role clarity, monthly performance feedback loop</li>
         <li>HubSpot integration scoping (build 2027 if confirmed)</li>
         <li>2027 roadmap proposal</li>
       </ul>
@@ -444,7 +453,7 @@
 </div>
 
 <footer>
-  <p><strong>Salvo 1968 × Lionstar Social</strong> &nbsp;·&nbsp; Last updated 10 September 2026 &nbsp;·&nbsp; WhatsApp and LinkedIn tools built and tested, Franca at Cheshunt 14 and 15 September &nbsp;·&nbsp; House of Pasta launches 1 October &nbsp;·&nbsp; <a href="https://forms.gle/KXhcYG7V8eyHjAfF6" target="_blank" rel="noopener">report anything via the team feedback form</a></p>
+  <p><strong>Salvo 1968 × Lionstar Social</strong> &nbsp;·&nbsp; Last updated 10 September 2026 &nbsp;·&nbsp; WhatsApp and LinkedIn tools ready to deploy, Franca at Cheshunt 14 and 15 September &nbsp;·&nbsp; House of Pasta launches 1 October &nbsp;·&nbsp; <a href="https://forms.gle/KXhcYG7V8eyHjAfF6" target="_blank" rel="noopener">report anything via the team feedback form</a></p>
 </footer>
 
 <script>
