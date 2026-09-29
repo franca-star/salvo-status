@@ -155,6 +155,20 @@
   .card.right .tag { color: var(--good); }
   .card.wrong .tag { color: var(--warn); }
 
+  /* Front door */
+  .door-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.9rem; margin-top: 0.5rem; }
+  .door { background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 0.9rem 1rem 1rem; border-top: 3px solid var(--gold); display: flex; flex-direction: column; }
+  .door.writing { border-top-color: var(--ink); }
+  .door h3 { font-family: Georgia, serif; font-size: 1.02rem; margin: 0; }
+  .door .owner { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-mute); margin-top: 0.15rem; }
+  .door p { font-size: 0.88rem; color: var(--ink-soft); margin: 0.5rem 0 0; }
+  .door p b { color: var(--ink); font-weight: 600; }
+  .door code { font-family: Menlo, Consolas, monospace; font-size: 0.82rem; background: var(--bg); border: 1px solid var(--border); padding: 0.05rem 0.35rem; border-radius: 3px; color: var(--ink); }
+  .door .launch { margin-top: auto; padding-top: 0.8rem; }
+  .door .launch a { display: inline-block; background: var(--gold); color: var(--ink); text-decoration: none; font-weight: 600; font-size: 0.82rem; padding: 0.4rem 0.9rem; border-radius: 3px; }
+  .door .launch a:hover { background: var(--ink); color: var(--bg); }
+  .door-note { font-size: 0.85rem; color: var(--ink-soft); font-style: italic; font-family: Georgia, serif; margin-top: 0.9rem; }
+
   footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); color: var(--ink-mute); font-size: 0.85rem; text-align: center; }
   footer strong { color: var(--ink); }
 
@@ -208,6 +222,64 @@
       <p><strong>Instagram</strong> (Liv) · <strong>LinkedIn</strong> (Liv) · <strong>WhatsApp</strong> (Egle) · <strong>Email</strong> (Vicky, with Lisa). Each one holds the brand, the personas and the rules for its channel, and asks you for what it's missing.</p>
     </div>
   </div>
+
+  <h2>The front door</h2>
+  <p class="tab-intro">One tile per tool: who it's for, when to use it and what to bring. Open it, start a fresh chat, and let Claude ask you the rest.</p>
+  <div class="door-grid">
+    <div class="door">
+      <h3>Monthly Brief</h3>
+      <div class="owner">Planning · Rosa</div>
+      <p><b>Use it when</b> you're planning the month's activity.</p>
+      <p><b>Bring</b> the month's specials, launches, dates and anything the team must push.</p>
+      <div class="launch"><a href="https://claude.ai/projects" target="_blank" rel="noopener">Open in Claude → Projects</a></div>
+    </div>
+    <div class="door">
+      <h3>Campaign Brief</h3>
+      <div class="owner">Planning · Rosa</div>
+      <p><b>Use it when</b> one campaign runs across every channel, like House of Pasta.</p>
+      <p><b>Bring</b> the goal, the offer, the dates and any assets or decks you already have.</p>
+      <div class="launch"><a href="https://claude.ai/projects" target="_blank" rel="noopener">Open in Claude → Projects</a></div>
+    </div>
+    <div class="door">
+      <h3>Content Brief</h3>
+      <div class="owner">Planning · Liv, or anyone</div>
+      <p><b>Use it when</b> a piece isn't in the monthly or campaign brief: a one-off, a reactive post, a supplier story.</p>
+      <p><b>Bring</b> the idea and what you want it to do. About five minutes, then take the brief to your writing tool.</p>
+      <div class="launch"><a href="https://claude.ai/projects" target="_blank" rel="noopener">Open in Claude → Projects</a></div>
+    </div>
+    <div class="door writing">
+      <h3>Instagram</h3>
+      <div class="owner">Writing · Liv</div>
+      <p><b>Use it when</b> you need a caption, carousel, reel script or story from a brief.</p>
+      <p><b>Bring</b> the brief (or the brief row), the product or story, and which images you have.</p>
+      <p>In a fresh chat type <code>/draft-b2b-instagram</code></p>
+      <div class="launch"><a href="https://claude.ai/new" target="_blank" rel="noopener">Open a fresh chat</a></div>
+    </div>
+    <div class="door writing">
+      <h3>LinkedIn</h3>
+      <div class="owner">Writing · Liv</div>
+      <p><b>Use it when</b> you need a company-page post, a photo-set post or a PDF carousel.</p>
+      <p><b>Bring</b> the brief, or the team, supplier or event story, and who should be tagged.</p>
+      <p>In a fresh chat type <code>/draft-b2b-linkedin</code></p>
+      <div class="launch"><a href="https://claude.ai/new" target="_blank" rel="noopener">Open a fresh chat</a></div>
+    </div>
+    <div class="door writing">
+      <h3>WhatsApp</h3>
+      <div class="owner">Writing · Egle</div>
+      <p><b>Use it when</b> you need a broadcast, a carousel or a short service message (cut-off, delivery, bank holiday).</p>
+      <p><b>Bring</b> the brief row, or the detail the message must carry.</p>
+      <p>In a fresh chat type <code>/draft-b2b-whatsapp</code></p>
+      <div class="launch"><a href="https://claude.ai/new" target="_blank" rel="noopener">Open a fresh chat</a></div>
+    </div>
+    <div class="door writing">
+      <h3>Email</h3>
+      <div class="owner">Writing · Vicky, with Lisa</div>
+      <p><b>Use it when</b> you're writing a mailer.</p>
+      <p><b>Bring</b> the brief, the products and the offer. The full email tool follows once HubSpot is running.</p>
+      <div class="launch"><a href="https://claude.ai/projects" target="_blank" rel="noopener">Open in Claude → Projects</a></div>
+    </div>
+  </div>
+  <p class="door-note">The writing tools are installed for everyone in the Salvo Claude team, so the slash command works in any chat. The planning tools and Email live under Projects.</p>
 
   <h2>The mindset</h2>
   <div class="mindset">
@@ -470,7 +542,7 @@
 </div>
 
 <footer>
-  <p><strong>Salvo 1968 × Lionstar Social</strong> &nbsp;·&nbsp; Last updated 18 September 2026 &nbsp;·&nbsp; WhatsApp and LinkedIn tools live with the team &nbsp;·&nbsp; House of Pasta launches 1 October &nbsp;·&nbsp; next visit 13 October &nbsp;·&nbsp; <a href="https://forms.gle/KXhcYG7V8eyHjAfF6" target="_blank" rel="noopener">report anything via the team feedback form</a></p>
+  <p><strong>Salvo 1968 × Lionstar Social</strong> &nbsp;·&nbsp; Last updated 29 September 2026 &nbsp;·&nbsp; WhatsApp and LinkedIn tools live with the team &nbsp;·&nbsp; House of Pasta launches 1 October &nbsp;·&nbsp; next visit 13 October &nbsp;·&nbsp; <a href="https://forms.gle/KXhcYG7V8eyHjAfF6" target="_blank" rel="noopener">report anything via the team feedback form</a></p>
 </footer>
 
 <script>
